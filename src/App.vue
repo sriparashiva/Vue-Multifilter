@@ -40,5 +40,6 @@
     max-width: 1080px;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 3rem;
   }
 </style>

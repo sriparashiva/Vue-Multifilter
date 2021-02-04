@@ -1,8 +1,8 @@
 <template>
   <div class="socialCard">
     <div class="socialCard__header">
-      <v-chip x-small class="socialCard__platform">{{ platform }}</v-chip>
-      <v-chip x-small class="socialCard__platform">{{ category }}</v-chip>
+      <v-chip small class="socialCard__platform">{{ platform }}</v-chip>
+      <v-chip small class="socialCard__platform">{{ category }}</v-chip>
     </div>
     <p class="socialCard__title">{{ title }}</p>
     <!-- <v-btn color="#776551" text :href="url" target="_blank">
@@ -33,7 +33,7 @@
 <style lang="scss" scoped>
   .socialCard {
     padding: 1rem;
-    background-color: #ffffff;
+    background-color: #f1eded;
     border: 1px solid rgba(218, 218, 218, 0.766);
     border-radius: 3px;
     transition: all 0.4ms ease;
@@ -41,8 +41,7 @@
     flex-flow: column nowrap;
 
     &:hover {
-      background-color: #f1eded;
-      border: 1px solid #f1eded;
+      border: 1px solid rgba(218, 218, 218, 0.766);
     }
 
     .socialCard__header {
@@ -56,7 +55,7 @@
     }
 
     .socialCard__title {
-      font-size: 0.88rem;
+      font-size: 1rem;
       line-height: 1.3em;
       font-weight: 500;
       color: #5a4e3f;
@@ -68,7 +67,7 @@
       color: #5e2121;
       text-decoration: none;
       transition: all 0.4ms ease;
-      font-size: 0.65em;
+      font-size: 0.75em;
       margin-top: auto;
       width: fit-content;
       display: flex;

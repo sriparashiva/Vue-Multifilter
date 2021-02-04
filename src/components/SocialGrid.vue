@@ -60,12 +60,17 @@
         </template>
       </template>
     </div>
+    <infinite-loading
+      :identifier="infiniteId"
+      @infinite="infiniteHandler"
+    ></infinite-loading>
   </div>
 </template>
 
 <script>
   import SocialItem from "./SocialItem.vue";
   import axios from "axios";
+  import InfiniteLoading from "vue-infinite-loading";
 
   //Source data Google Sheet ID
   const sheetID = "1uy6AQ0m_PJd5zGhqICjvX1jgWs7-pBoIL9C8Dpjb5r8";
@@ -73,6 +78,7 @@
     name: "SocialGrid",
     components: {
       SocialItem,
+      InfiniteLoading,
     },
     data() {
       return {
@@ -86,6 +92,7 @@
         selectedPlatforms: [],
         dataImported: false,
         loadedLinks: [],
+        infiniteId: +new Date(),
       };
     },
     computed: {
@@ -166,24 +173,36 @@
         // Add platforms set to array of platforms
         this.platforms = [...platformSet];
       },
-      loadMore() {
-        this.loadedLinks = [
-          ...this.loadedLinks,
-          ...this.loadBuffer.splice(0, this.perPage),
-        ];
-      },
-      handleScroll() {
-        // Detect when scrolled to bottom.
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-          this.loadMore();
+      // loadMore() {
+      //   this.loadedLinks = [
+      //     ...this.loadedLinks,
+      //     ...this.loadBuffer.splice(0, this.perPage),
+      //   ];
+      // },
+      // handleScroll() {
+      //   // Detect when scrolled to bottom.
+      //   if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+      //     if (this.loadBuffer.length) this.loadMore();
+      //   }
+      // },
+      infiniteHandler($state) {
+        if (this.loadBuffer.length) {
+          this.loadedLinks = [
+            ...this.loadedLinks,
+            ...this.loadBuffer.splice(0, this.perPage),
+          ];
+          $state.loaded();
+        } else {
+          $state.complete();
         }
       },
       resetLoadedLinks() {
+        this.infiniteId += 1;
         this.loadedLinks = [];
       },
     },
     created() {
-      window.addEventListener("scroll", this.handleScroll);
+      // window.addEventListener("scroll", this.handleScroll);
       axios
         .get(
           `https://spreadsheets.google.com/feeds/list/${sheetID}/1/public/values?alt=json`
@@ -199,7 +218,6 @@
   };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   .socialGrid {
     display: grid;
