@@ -1,20 +1,20 @@
 <template>
-  <div class="socialCard">
-    <div class="socialCard__header">
+  <v-card elevation="2" class="socialCard">
+    <v-card-subtitle class="socialCard__header">
       <v-chip small class="socialCard__platform">{{ platform }}</v-chip>
       <v-chip small class="socialCard__platform">{{ category }}</v-chip>
-    </div>
-    <p class="socialCard__title">{{ title }}</p>
-    <!-- <v-btn color="#776551" text :href="url" target="_blank">
-      View
-    </v-btn> -->
-    <a class="socialCard__link" :href="url" target="_blank"
-      ><span>View</span
-      ><v-icon x-small class="socialCard__linkIcon">
-        mdi-chevron-double-right
-      </v-icon>
-    </a>
-  </div>
+    </v-card-subtitle>
+    <v-card-title class="socialCard__title"> {{ title }}</v-card-title>
+    <v-divider class="socialCard__divider"></v-divider>
+
+    <v-card-actions class="socialCard__link">
+      <v-btn color="#5e2121" text :href="url" target="_blank">
+        VIEW<v-icon x-small class="socialCard__linkIcon">
+          mdi-chevron-double-right
+        </v-icon>
+      </v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>
@@ -32,16 +32,15 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   .socialCard {
-    padding: 1rem;
-    background-color: #f1eded;
-    border: 1px solid rgba(218, 218, 218, 0.766);
-    border-radius: 3px;
-    transition: all 0.4ms ease;
+    padding: 0.5rem 0.5rem 0 0.5rem;
+    transition: background-color 0.5s ease;
+    background-color: white;
     display: flex;
     flex-flow: column nowrap;
 
     &:hover {
-      border: 1px solid rgba(218, 218, 218, 0.766);
+      //   border: 1px solid rgba(218, 218, 218, 0.766);
+      background-color: #f1eded;
     }
 
     .socialCard__header {
@@ -59,25 +58,21 @@
       line-height: 1.3em;
       font-weight: 500;
       color: #5a4e3f;
-      margin-top: 1rem;
       font-family: AnodinaDevanagariBold;
+      word-break: break-word;
+      padding-top: 0;
     }
 
-    a.socialCard__link {
-      color: #5e2121;
-      text-decoration: none;
-      transition: all 0.4ms ease;
-      font-size: 0.75em;
+    .socialCard__divider {
       margin-top: auto;
-      width: fit-content;
-      display: flex;
-      align-items: center;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+    }
 
-      &:hover {
-        color: #d1af83;
-      }
+    .socialCard__link {
+      margin-top: auto;
+    }
+
+    .socialCard__linkIcon {
+      transform: translateY(-1px);
     }
   }
 </style>

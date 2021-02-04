@@ -25,7 +25,7 @@
 
     <div class="socialGrid">
       <template v-if="!dataImported">
-        <v-sheet v-for="n in 6" :key="n" :color="`grey lighten-4`" class="pa-3">
+        <v-sheet v-for="n in 8" :key="n" :color="`grey lighten-4`" class="pa-3">
           <v-card elevation="0" outlined>
             <v-skeleton-loader
               class="mx-auto"
@@ -60,10 +60,11 @@
         </template>
       </template>
     </div>
-    <infinite-loading
-      :identifier="infiniteId"
-      @infinite="infiniteHandler"
-    ></infinite-loading>
+    <infinite-loading :identifier="infiniteId" @infinite="infiniteHandler">
+      <!-- The no-more slot will not be displayed -->
+      <span slot="no-more"></span>
+      <span slot="no-results"></span>
+    </infinite-loading>
   </div>
 </template>
 
@@ -173,18 +174,6 @@
         // Add platforms set to array of platforms
         this.platforms = [...platformSet];
       },
-      // loadMore() {
-      //   this.loadedLinks = [
-      //     ...this.loadedLinks,
-      //     ...this.loadBuffer.splice(0, this.perPage),
-      //   ];
-      // },
-      // handleScroll() {
-      //   // Detect when scrolled to bottom.
-      //   if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-      //     if (this.loadBuffer.length) this.loadMore();
-      //   }
-      // },
       infiniteHandler($state) {
         if (this.loadBuffer.length) {
           this.loadedLinks = [
@@ -202,7 +191,6 @@
       },
     },
     created() {
-      // window.addEventListener("scroll", this.handleScroll);
       axios
         .get(
           `https://spreadsheets.google.com/feeds/list/${sheetID}/1/public/values?alt=json`
@@ -211,9 +199,6 @@
           this.dataImported = true;
           this.parseData(response.data.feed.entry);
         });
-    },
-    destroyed() {
-      window.removeEventListener("scroll", this.handleScroll);
     },
   };
 </script>
@@ -236,7 +221,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 1rem 0;
+    margin: 1rem 0 3rem 0;
 
     .filters__select {
       max-width: 45%;
