@@ -1,47 +1,96 @@
 <template>
   <div>
     <div class="filters">
-      <v-select
+      <q-select
+        filled
+        use-input
+        input-debounce="0"
+        :options="platformSelectOptions"
+        @filter="filterPlatformSelect"
         v-model="selectedPlatforms"
-        :items="platforms"
+        multiple
+        use-chips
         label="Platforms"
-        multiple
-        chips
-        dense
         hint="Filter by platforms"
-        persistent-hint
         class="filters__select"
-      ></v-select>
-      <v-select
+        options-dense
+        color="brown-7"
+        style="width: 100%;"
+      >
+        <template v-slot:no-option>
+          <q-item>
+            <q-item-section class="text-grey">
+              No results
+            </q-item-section>
+          </q-item>
+        </template>
+      </q-select>
+      <q-select
+        filled
+        use-input
+        input-debounce="0"
+        :options="categories"
         v-model="selectedCategories"
-        :items="categories"
-        label="Categories"
         multiple
-        chips
-        dense
-        hint="Filter by categories"
-        persistent-hint
+        use-chips
+        label="Categories"
+        hint="Filter by category"
         class="filters__select"
-      ></v-select>
+        options-dense
+        color="brown-7"
+        style="width: 100%"
+      />
     </div>
 
-    <div class="socialGrid">
-      <template v-if="!dataImported">
-        <v-sheet v-for="n in 8" :key="n" :color="`grey lighten-4`" class="pa-3">
-          <v-card elevation="0" outlined>
-            <v-skeleton-loader
-              class="mx-auto"
-              max-width="300"
-              type="article"
-            ></v-skeleton-loader>
-          </v-card>
-        </v-sheet>
-      </template>
-      <template v-else>
-        <template
-          v-if="filteredLinksToDisplay.length > 0"
-          transition="fade-transition"
-        >
+    <div class="filters">
+      <q-select
+        filled
+        v-model="selectedLanguage"
+        use-input
+        hide-selected
+        fill-input
+        input-debounce="0"
+        clearable
+        options-dense
+        :options="languageSelectOptions"
+        @filter="filterLanguagesSelect"
+        label="Select a language"
+        hint="View social media links in your language"
+        color="brown-7"
+        style="width: 250px; padding-bottom: 32px"
+      >
+        <template v-slot:no-option>
+          <q-item>
+            <q-item-section class="text-grey">
+              No results
+            </q-item-section>
+          </q-item>
+        </template>
+      </q-select>
+    </div>
+
+    <div v-if="!dataImported" class="socialGrid">
+      <q-card v-for="n in 8" :key="n" bordered flat style="max-width: 300px">
+        <q-card-section>
+          <q-skeleton type="text" height="30px" />
+          <q-skeleton type="text" height="30px" />
+
+          <div
+            style="margin-top: 1rem; display: flex; flex-flow: row nowrap; gap: .5rem"
+          >
+            <q-skeleton type="QChip" width="75px" />
+            <q-skeleton type="QChip" width="75px" />
+          </div>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-skeleton type="QBtn" height="25px" width="75px" />
+        </q-card-actions>
+      </q-card>
+    </div>
+    <div v-else>
+      <div v-if="filteredLinksToDisplay.length > 0">
+        <q-infinite-scroll class="socialGrid" @load="loadMore" :offset="250">
           <social-item
             v-for="link in filteredLinksToDisplay"
             :key="link.id"
@@ -49,15 +98,12 @@
             :url="link.url"
             :platform="link.platform"
             :category="link.category"
-            transition="fade-transition"
             @set-category-filter="setCategoryFilter"
             @set-platform-filter="setPlatformFilter"
+            class="socialCardShown"
           />
-        </template>
-        <div v-else class="socialGrid__noLinksMessage">No links to display</div>
-
-        <template v-if="loadedLinks.length > 0">
           <social-item
+            v-show="loadedLinks.length > 0"
             v-for="link in loadedLinks"
             :key="link.id"
             :title="link.title"
@@ -65,83 +111,65 @@
             :platform="link.platform"
             :category="link.category"
           />
-        </template>
-      </template>
+          <template v-slot:loading>
+            <div
+              v-if="loadBuffer.length > 0"
+              class="row justify-center q-my-md"
+            >
+              <q-spinner color="accent" size="40px"></q-spinner>
+            </div>
+          </template>
+        </q-infinite-scroll>
+      </div>
+      <div v-else class="socialGrid__noLinksMessage">No links to display</div>
     </div>
-    <infinite-loading :identifier="infiniteId" @infinite="infiniteHandler">
-      <!-- The no-more slot will not be displayed -->
-      <span slot="no-more"></span>
-      <span slot="no-results"></span>
-    </infinite-loading>
   </div>
 </template>
 
 <script>
   import SocialItem from "./SocialItem.vue";
   import axios from "axios";
-  import InfiniteLoading from "vue-infinite-loading";
+  import intersection from "lodash.intersection";
 
   //Source data Google Sheet ID
-  const sheetID = "1uy6AQ0m_PJd5zGhqICjvX1jgWs7-pBoIL9C8Dpjb5r8";
+  // const sheetID = "1uy6AQ0m_PJd5zGhqICjvX1jgWs7-pBoIL9C8Dpjb5r8";
+  const sheetID = "1Lz4onaG5HB-ue84ka4QT0H1OrHrzIO2eRjnvzZCXPUY";
   export default {
     name: "SocialGrid",
     components: {
       SocialItem,
-      InfiniteLoading,
     },
     data() {
       return {
         socialLinks: [],
         displayedLinks: [],
-        perPage: 30,
+        perPage: 10,
         categories: [],
         selectedCategories: [],
         platforms: [],
         selectedPlatforms: [],
+        platformSelectOptions: [],
         dataImported: false,
         loadedLinks: [],
         infiniteId: +new Date(),
+        country: "",
+        region: "",
+        allLanguages: [],
+        languageSelectOptions: [],
+        selectedLanguage: "",
       };
     },
     computed: {
       filteredLinks() {
-        // If both categories and platforms are selected, filter for both
-        if (
-          this.selectedCategories.length > 0 &&
-          this.selectedPlatforms.length > 0
-        ) {
-          this.resetLoadedLinks();
-          return this.socialLinks.filter(
-            (link) =>
-              this.selectedCategories.includes(link.category) &&
-              this.selectedPlatforms.includes(link.platform)
+        this.resetLoadedLinks();
+        if (this.selectedLanguage !== null)
+          return intersection(
+            this.filterPlatforms(),
+            this.filterCategories(),
+            this.filterLanguage()
           );
-        }
-        // If only categories are selected, filter for categories
-        else if (
-          this.selectedCategories.length > 0 &&
-          this.selectedPlatforms.length === 0
-        ) {
-          this.resetLoadedLinks();
-          return this.socialLinks.filter((link) =>
-            this.selectedCategories.includes(link.category)
-          );
-        }
-        // If only platforms are selected, filter for platforms
-        else if (
-          this.selectedCategories.length === 0 &&
-          this.selectedPlatforms.length > 0
-        ) {
-          this.resetLoadedLinks();
-          return this.socialLinks.filter((link) =>
-            this.selectedPlatforms.includes(link.platform)
-          );
-        }
-        // If no categories/platforms are selected, display all links
-        else {
-          this.resetLoadedLinks();
-          return this.socialLinks;
-        }
+        else
+          return intersection(this.filterPlatforms(), this.filterCategories());
       },
       loadBuffer() {
         return this.filteredLinks.filter((link, index) => index > 30);
@@ -162,6 +190,9 @@
             title: value.gsx$title.$t,
             url: value.gsx$url.$t,
             category: value.gsx$category.$t,
+            language: value.gsx$language.$t,
+            country: value.gsx$countryfull.$t,
+            region: value.gsx$regionfull.$t,
           };
 
           // Add to the set of categories
@@ -192,6 +223,18 @@
           $state.complete();
         }
       },
+      loadMore(index, done) {
+        setTimeout(() => {
+          if (this.loadBuffer.length > 0) {
+            this.loadedLinks = [
+              ...this.loadedLinks,
+              ...this.loadBuffer.splice(0, this.perPage),
+            ];
+            done();
+          }
+        }, 800);
+      },
+
       resetLoadedLinks() {
         this.infiniteId += 1;
         this.loadedLinks = [];
@@ -204,16 +247,82 @@
         this.selectedCategories = [];
         this.selectedPlatforms = [platform];
       },
+      filterCategories() {
+        if (this.selectedCategories.length > 0)
+          return this.socialLinks.filter((link) =>
+            this.selectedCategories.includes(link.category)
+          );
+        else return this.socialLinks;
+      },
+      filterPlatforms() {
+        if (this.selectedPlatforms.length > 0)
+          return this.socialLinks.filter((link) =>
+            this.selectedPlatforms.includes(link.platform)
+          );
+        else return this.socialLinks;
+      },
+      filterLanguage() {
+        if (this.selectedLanguage !== "")
+          return this.socialLinks.filter(
+            (link) => this.selectedLanguage === link.language
+          );
+        else return this.socialLinks;
+      },
+      filterPlatformSelect(val, update) {
+        if (val === "") {
+          update(() => {
+            this.platformSelectOptions = this.platforms;
+          });
+          return;
+        }
+
+        update(() => {
+          const needle = val.toLowerCase();
+          this.platformSelectOptions = this.platforms.filter(
+            (v) => v.toLowerCase().indexOf(needle) > -1
+          );
+        });
+      },
+      filterLanguagesSelect(val, update) {
+        if (val === "") {
+          update(() => {
+            this.languageSelectOptions = this.allLanguages;
+          });
+          return;
+        }
+
+        update(() => {
+          const needle = val.toLowerCase();
+          this.languageSelectOptions = this.allLanguages.filter(
+            (v) => v.toLowerCase().indexOf(needle) > -1
+          );
+        });
+      },
+
+      getLinksData() {
+        axios
+          .get(
+            `https://spreadsheets.google.com/feeds/list/${sheetID}/1/public/values?alt=json`
+          )
+          .then((response) => {
+            this.dataImported = true;
+            this.parseData(response.data.feed.entry);
+          });
+      },
+      getLanguages() {
+        axios
+          .get(
+            `https://spreadsheets.google.com/feeds/list/${sheetID}/2/public/values?alt=json`
+          )
+          .then((response) => this.parseLanguages(response.data.feed.entry));
+      },
+      parseLanguages(entries) {
+        entries.forEach((value) => this.allLanguages.push(value.gsx$name.$t));
+      },
     },
     created() {
-      axios
-        .get(
-          `https://spreadsheets.google.com/feeds/list/${sheetID}/1/public/values?alt=json`
-        )
-        .then((response) => {
-          this.dataImported = true;
-          this.parseData(response.data.feed.entry);
-        });
+      this.getLinksData();
+      this.getLanguages();
     },
   };
 </script>

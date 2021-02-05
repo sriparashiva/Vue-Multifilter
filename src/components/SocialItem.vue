@@ -1,29 +1,37 @@
 <template>
-  <v-card elevation="2" class="socialCard">
-    <v-card-title class="socialCard__title"> {{ title }}</v-card-title>
-    <v-card-subtitle class="socialCard__subtitle">
-      <v-chip
-        small
-        @click="setPlatformFilter"
-        color="#B69D7E"
-        class="socialCard__chip"
-        >{{ platform }}</v-chip
-      >
-      <v-chip small @click="setCategoryFilter" class="socialCard__chip-light">{{
-        category
-      }}</v-chip>
-    </v-card-subtitle>
+  <q-card class="socialCard shadow-1">
+    <q-card-section>
+      <div class="socialCard__title">{{ title }}</div>
+      <div class="socialCard__subtitle">
+        <q-chip
+          size="12px"
+          clickable
+          @click="setPlatformFilter"
+          color="positive"
+          text-color="white"
+          class="socialCard__chip"
+        >
+          {{ platform }}
+        </q-chip>
+        <q-chip
+          size="12px"
+          clickable
+          @click="setCategoryFilter"
+          color="grey-4"
+          text-color="secondary"
+          class="socialCard__chip"
+        >
+          {{ category }}
+        </q-chip>
+      </div>
+    </q-card-section>
 
-    <v-card-actions class="socialCard__link">
-      <v-divider class="socialCard__divider"></v-divider>
+    <q-separator color="grey-4" inset class="socialCard__divider" />
 
-      <v-btn color="#5e2121" text :href="url" target="_blank">
-        VISIT<v-icon x-small class="socialCard__linkIcon">
-          mdi-chevron-double-right
-        </v-icon>
-      </v-btn>
-    </v-card-actions>
-  </v-card>
+    <q-card-actions class="socialCard__link" align="right">
+      <q-btn flat text :href="url" target="_blank">VISIT</q-btn>
+    </q-card-actions>
+  </q-card>
 </template>
 
 <script>
@@ -69,11 +77,7 @@
     }
 
     .socialCard__chip {
-      color: #fff;
-    }
-
-    .socialCard__chip-light {
-      color: #5a4e3f;
+      margin: 0;
     }
 
     .socialCard__title {
@@ -85,9 +89,14 @@
       font-family: SourceSansProDevanagariSemiBold;
     }
 
+    .socialCard__divider {
+      margin-top: auto;
+    }
+
     .socialCard__link {
       margin-top: auto;
       font-family: SourceSansProDevanagariSemiBold;
+      letter-spacing: 1px;
     }
 
     .socialCard__linkIcon {

@@ -1,9 +1,7 @@
 <template>
-  <v-app>
-    <v-main>
-      <social-grid />
-    </v-main>
-  </v-app>
+  <div id="app">
+    <social-grid />
+  </div>
 </template>
 
 <script>
@@ -34,6 +32,7 @@
     font-family: SourceSansProDevanagariRegular, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    color: #5f4444;
     margin-top: 60px;
     width: 80%;
     max-width: 1080px;
