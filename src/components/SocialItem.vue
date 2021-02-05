@@ -1,19 +1,24 @@
 <template>
   <v-card elevation="2" class="socialCard">
-    <v-card-subtitle class="socialCard__header">
-      <v-chip small @click="setPlatformFilter" class="socialCard__platform">{{
-        platform
-      }}</v-chip>
-      <v-chip small @click="setCategoryFilter" class="socialCard__platform">{{
+    <v-card-title class="socialCard__title"> {{ title }}</v-card-title>
+    <v-card-subtitle class="socialCard__subtitle">
+      <v-chip
+        small
+        @click="setPlatformFilter"
+        color="#B69D7E"
+        class="socialCard__chip"
+        >{{ platform }}</v-chip
+      >
+      <v-chip small @click="setCategoryFilter" class="socialCard__chip-light">{{
         category
       }}</v-chip>
     </v-card-subtitle>
-    <v-card-title class="socialCard__title"> {{ title }}</v-card-title>
-    <v-divider class="socialCard__divider"></v-divider>
 
     <v-card-actions class="socialCard__link">
+      <v-divider class="socialCard__divider"></v-divider>
+
       <v-btn color="#5e2121" text :href="url" target="_blank">
-        VIEW<v-icon x-small class="socialCard__linkIcon">
+        VISIT<v-icon x-small class="socialCard__linkIcon">
           mdi-chevron-double-right
         </v-icon>
       </v-btn>
@@ -45,7 +50,6 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   .socialCard {
-    padding: 0.5rem 0.5rem 0 0.5rem;
     transition: background-color 0.5s ease;
     background-color: white;
     display: flex;
@@ -56,31 +60,34 @@
       background-color: #f1eded;
     }
 
-    .socialCard__header {
+    .socialCard__subtitle {
       display: flex;
-      flex-flow: row nowrap;
-      gap: 1rem;
+      flex-flow: row;
+      gap: 0.5rem;
+      letter-spacing: 0px;
+      padding-top: 0.75rem;
     }
 
-    .socialCard__platform {
-      color: #776551;
+    .socialCard__chip {
+      color: #fff;
+    }
+
+    .socialCard__chip-light {
+      color: #5a4e3f;
     }
 
     .socialCard__title {
       font-size: 1rem;
-      line-height: 1.3em;
-      font-weight: 600;
+      line-height: 1.25em;
       color: #5a4e3f;
       word-break: break-word;
-      padding-top: 0;
-    }
-
-    .socialCard__divider {
-      margin-top: auto;
+      letter-spacing: 0px;
+      font-family: SourceSansProDevanagariSemiBold;
     }
 
     .socialCard__link {
       margin-top: auto;
+      font-family: SourceSansProDevanagariSemiBold;
     }
 
     .socialCard__linkIcon {

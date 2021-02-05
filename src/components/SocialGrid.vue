@@ -7,6 +7,7 @@
         label="Platforms"
         multiple
         chips
+        dense
         hint="Filter by platforms"
         persistent-hint
         class="filters__select"
@@ -17,6 +18,7 @@
         label="Categories"
         multiple
         chips
+        dense
         hint="Filter by categories"
         persistent-hint
         class="filters__select"

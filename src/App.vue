@@ -23,18 +23,12 @@
     padding: 0;
   }
   @font-face {
-    font-family: AnodinaDevanagariBold;
-    src: url(https://nithyanandauniversity.github.io/fontrepo/AnodinaDevanagari/Anodina-Devanagari-Bold.ttf);
-  }
-
-  @font-face {
-    font-family: AnodinaDevanagariRegular;
-    src: url(https://nithyanandauniversity.github.io/fontrepo/AnodinaDevanagari/AnodinaDevanagariRegular.ttf);
-  }
-
-  @font-face {
     font-family: SourceSansProDevanagariRegular;
-    src: url(https://nithyanandauniversity.github.io/fontrepo/SourceSansProDevanagari/SourceSansProDevanagariRegular.ttf);
+    src: url("./assets/fonts/SourceSansProDevanagariRegular.ttf");
+  }
+  @font-face {
+    font-family: SourceSansProDevanagariSemiBold;
+    src: url("./assets/fonts/SourceSansProDevanagariSemiBold.ttf");
   }
   #app {
     font-family: SourceSansProDevanagariRegular, sans-serif;
