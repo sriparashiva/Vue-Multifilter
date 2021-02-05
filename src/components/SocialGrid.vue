@@ -253,10 +253,12 @@
         this.loadedLinks = [];
       },
       setCategoryFilter(category) {
-        this.selectedCategories = [category];
+        this.resetLoadedLinks();
         this.selectedPlatforms = [];
+        this.selectedCategories = [category];
       },
       setPlatformFilter(platform) {
+        this.resetLoadedLinks();
         this.selectedCategories = [];
         this.selectedPlatforms = [platform];
       },
