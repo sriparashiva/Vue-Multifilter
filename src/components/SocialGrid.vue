@@ -14,7 +14,7 @@
         hint="Filter by platforms"
         class="filters__select"
         options-dense
-        color="brown-7"
+        color="primary"
         style="width: 100%;"
       >
         <template v-slot:no-option>
@@ -37,7 +37,7 @@
         hint="Filter by category"
         class="filters__select"
         options-dense
-        color="brown-7"
+        color="primary"
         style="width: 100%"
       />
     </div>
@@ -56,8 +56,8 @@
         @filter="filterLanguagesSelect"
         label="Select a language"
         hint="View social media links in your language"
-        color="brown-7"
-        style="width: 250px; padding-bottom: 32px"
+        color="primary"
+        style="width: 45%"
       >
         <template v-slot:no-option>
           <q-item>
@@ -143,7 +143,7 @@
       return {
         socialLinks: [],
         displayedLinks: [],
-        perPage: 10,
+        perPage: 30,
         categories: [],
         selectedCategories: [],
         platforms: [],
@@ -232,7 +232,7 @@
             ];
             done();
           }
-        }, 800);
+        }, 600);
       },
 
       resetLoadedLinks() {
@@ -333,13 +333,6 @@
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1rem;
     justify-content: center;
-
-    .socialGrid__noLinksMessage {
-      display: flex;
-      justify-content: center;
-      margin-top: 3rem;
-      color: #717171;
-    }
   }
   .filters {
     display: flex;
@@ -350,5 +343,12 @@
     .filters__select {
       max-width: 45%;
     }
+  }
+  .socialGrid__noLinksMessage {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+    color: #776551;
+    font-size: 1.25rem;
   }
 </style>

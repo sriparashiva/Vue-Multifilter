@@ -1,15 +1,12 @@
 module.exports = {
   productionSourceMap: false,
 
-  transpileDependencies: [
-    'vuetify',
-    'quasar'
-  ],
+  transpileDependencies: ["quasar"],
 
   pluginOptions: {
     quasar: {
-      importStrategy: 'kebab',
-      rtlSupport: false
-    }
-  }
+      importStrategy: "kebab",
+      rtlSupport: false,
+    },
+  },
 };
