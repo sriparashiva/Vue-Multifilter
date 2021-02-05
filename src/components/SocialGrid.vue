@@ -132,8 +132,8 @@
   import intersection from "lodash.intersection";
 
   //Source data Google Sheet ID
-  // const sheetID = "1uy6AQ0m_PJd5zGhqICjvX1jgWs7-pBoIL9C8Dpjb5r8";
-  const sheetID = "1Lz4onaG5HB-ue84ka4QT0H1OrHrzIO2eRjnvzZCXPUY";
+  const sheetID = "1uy6AQ0m_PJd5zGhqICjvX1jgWs7-pBoIL9C8Dpjb5r8";
+  // const sheetID = "1Lz4onaG5HB-ue84ka4QT0H1OrHrzIO2eRjnvzZCXPUY";
   export default {
     name: "SocialGrid",
     components: {
@@ -191,8 +191,7 @@
             url: value.gsx$url.$t,
             category: value.gsx$category.$t,
             language: value.gsx$language.$t,
-            country: value.gsx$countryfull.$t,
-            region: value.gsx$regionfull.$t,
+            geography: value.gsx$geography.$t,
           };
 
           // Add to the set of categories
