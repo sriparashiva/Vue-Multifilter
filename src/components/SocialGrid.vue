@@ -11,7 +11,7 @@
         multiple
         use-chips
         label="Platforms"
-        hint="Filter by platforms"
+        hint="Filter by social media platform"
         class="filters__select"
         options-dense
         color="primary"
@@ -54,8 +54,33 @@
         options-dense
         :options="languageSelectOptions"
         @filter="filterLanguagesSelect"
-        label="Select a language"
-        hint="View social media links in your language"
+        label="Language"
+        hint="View social media in your language"
+        color="primary"
+        style="width: 45%"
+      >
+        <template v-slot:no-option>
+          <q-item>
+            <q-item-section class="text-grey">
+              No results
+            </q-item-section>
+          </q-item>
+        </template>
+      </q-select>
+
+      <q-select
+        filled
+        v-model="selectedRegion"
+        use-input
+        hide-selected
+        fill-input
+        input-debounce="0"
+        clearable
+        options-dense
+        :options="regionSelectOptions"
+        @filter="filterRegionsSelect"
+        label="Region"
+        hint="View social media related to your region"
         color="primary"
         style="width: 45%"
       >
@@ -68,6 +93,8 @@
         </template>
       </q-select>
     </div>
+
+    <q-separator color="grey-5" inset style="margin-bottom: 2rem" />
 
     <div v-if="!dataImported" class="socialGrid">
       <q-card v-for="n in 8" :key="n" bordered flat style="max-width: 300px">
@@ -151,25 +178,23 @@
         platformSelectOptions: [],
         dataImported: false,
         loadedLinks: [],
-        infiniteId: +new Date(),
-        country: "",
-        region: "",
         allLanguages: [],
         languageSelectOptions: [],
-        selectedLanguage: "",
+        selectedLanguage: null,
+        allRegions: [],
+        regionSelectOptions: [],
+        selectedRegion: null,
       };
     },
     computed: {
       filteredLinks() {
         this.resetLoadedLinks();
-        if (this.selectedLanguage !== null)
-          return intersection(
-            this.filterPlatforms(),
-            this.filterCategories(),
-            this.filterLanguage()
-          );
-        else
-          return intersection(this.filterPlatforms(), this.filterCategories());
+        return intersection(
+          this.filterPlatforms(),
+          this.filterCategories(),
+          this.filterLanguage(),
+          this.filterRegion()
+        );
       },
       loadBuffer() {
         return this.filteredLinks.filter((link, index) => index > 30);
@@ -191,7 +216,7 @@
             url: value.gsx$url.$t,
             category: value.gsx$category.$t,
             language: value.gsx$language.$t,
-            geography: value.gsx$geography.$t,
+            region: value.gsx$geography.$t,
           };
 
           // Add to the set of categories
@@ -211,17 +236,6 @@
         // Add platforms set to array of platforms
         this.platforms = [...platformSet];
       },
-      infiniteHandler($state) {
-        if (this.loadBuffer.length) {
-          this.loadedLinks = [
-            ...this.loadedLinks,
-            ...this.loadBuffer.splice(0, this.perPage),
-          ];
-          $state.loaded();
-        } else {
-          $state.complete();
-        }
-      },
       loadMore(index, done) {
         setTimeout(() => {
           if (this.loadBuffer.length > 0) {
@@ -233,9 +247,7 @@
           }
         }, 600);
       },
-
       resetLoadedLinks() {
-        this.infiniteId += 1;
         this.loadedLinks = [];
       },
       setCategoryFilter(category) {
@@ -261,9 +273,16 @@
         else return this.socialLinks;
       },
       filterLanguage() {
-        if (this.selectedLanguage !== "")
+        if (this.selectedLanguage !== null)
           return this.socialLinks.filter(
             (link) => this.selectedLanguage === link.language
+          );
+        else return this.socialLinks;
+      },
+      filterRegion() {
+        if (this.selectedRegion !== null)
+          return this.socialLinks.filter(
+            (link) => this.selectedRegion.value === link.region
           );
         else return this.socialLinks;
       },
@@ -274,7 +293,6 @@
           });
           return;
         }
-
         update(() => {
           const needle = val.toLowerCase();
           this.platformSelectOptions = this.platforms.filter(
@@ -289,7 +307,6 @@
           });
           return;
         }
-
         update(() => {
           const needle = val.toLowerCase();
           this.languageSelectOptions = this.allLanguages.filter(
@@ -297,7 +314,20 @@
           );
         });
       },
-
+      filterRegionsSelect(val, update) {
+        if (val === "") {
+          update(() => {
+            this.regionSelectOptions = this.allRegions;
+          });
+          return;
+        }
+        update(() => {
+          const needle = val.toLowerCase();
+          this.regionSelectOptions = this.allRegions.filter(
+            (v) => v.label.toLowerCase().indexOf(needle) > -1
+          );
+        });
+      },
       getLinksData() {
         axios
           .get(
@@ -315,13 +345,29 @@
           )
           .then((response) => this.parseLanguages(response.data.feed.entry));
       },
+      getRegions() {
+        axios
+          .get(
+            `https://spreadsheets.google.com/feeds/list/${sheetID}/3/public/values?alt=json`
+          )
+          .then((response) => this.parseRegions(response.data.feed.entry));
+      },
       parseLanguages(entries) {
         entries.forEach((value) => this.allLanguages.push(value.gsx$name.$t));
+      },
+      parseRegions(entries) {
+        entries.forEach((value) =>
+          this.allRegions.push({
+            label: value.gsx$name.$t,
+            value: value.gsx$key.$t,
+          })
+        );
       },
     },
     created() {
       this.getLinksData();
       this.getLanguages();
+      this.getRegions();
     },
   };
 </script>
@@ -337,7 +383,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 1rem 0 3rem 0;
+    margin: 1rem 0 2rem 0;
 
     .filters__select {
       max-width: 45%;

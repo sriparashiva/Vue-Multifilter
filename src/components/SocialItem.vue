@@ -28,7 +28,7 @@
 
     <q-separator color="grey-4" inset class="socialCard__divider" />
 
-    <q-card-actions class="socialCard__link" align="right">
+    <q-card-actions class="socialCard__link" align="left">
       <q-btn flat text :href="url" target="_blank">VISIT</q-btn>
     </q-card-actions>
   </q-card>
@@ -69,15 +69,12 @@
     }
 
     .socialCard__subtitle {
-      display: flex;
-      flex-flow: row;
-      gap: 0.5rem;
       letter-spacing: 0px;
       padding-top: 0.75rem;
     }
 
     .socialCard__chip {
-      margin: 0;
+      margin: 0 0.25rem 0.5rem 0;
     }
 
     .socialCard__title {
@@ -94,7 +91,6 @@
     }
 
     .socialCard__link {
-      margin-top: auto;
       font-family: SourceSansProDevanagariSemiBold;
       letter-spacing: 1px;
     }
