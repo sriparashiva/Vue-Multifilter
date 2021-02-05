@@ -2,22 +2,22 @@
   <div>
     <div class="filters">
       <v-select
-        v-model="selectedCategories"
-        :items="categories"
-        label="Categories"
-        multiple
-        chips
-        hint="Filter by categories"
-        persistent-hint
-        class="filters__select"
-      ></v-select>
-      <v-select
         v-model="selectedPlatforms"
         :items="platforms"
         label="Platforms"
         multiple
         chips
         hint="Filter by platforms"
+        persistent-hint
+        class="filters__select"
+      ></v-select>
+      <v-select
+        v-model="selectedCategories"
+        :items="categories"
+        label="Categories"
+        multiple
+        chips
+        hint="Filter by categories"
         persistent-hint
         class="filters__select"
       ></v-select>
@@ -36,7 +36,10 @@
         </v-sheet>
       </template>
       <template v-else>
-        <template v-if="filteredLinksToDisplay.length > 0">
+        <template
+          v-if="filteredLinksToDisplay.length > 0"
+          transition="fade-transition"
+        >
           <social-item
             v-for="link in filteredLinksToDisplay"
             :key="link.id"
@@ -44,6 +47,9 @@
             :url="link.url"
             :platform="link.platform"
             :category="link.category"
+            transition="fade-transition"
+            @set-category-filter="setCategoryFilter"
+            @set-platform-filter="setPlatformFilter"
           />
         </template>
         <div v-else class="socialGrid__noLinksMessage">No links to display</div>
@@ -85,7 +91,6 @@
       return {
         socialLinks: [],
         displayedLinks: [],
-        currentPage: 1,
         perPage: 30,
         categories: [],
         selectedCategories: [],
@@ -188,6 +193,14 @@
       resetLoadedLinks() {
         this.infiniteId += 1;
         this.loadedLinks = [];
+      },
+      setCategoryFilter(category) {
+        this.selectedCategories = [category];
+        this.selectedPlatforms = [];
+      },
+      setPlatformFilter(platform) {
+        this.selectedCategories = [];
+        this.selectedPlatforms = [platform];
       },
     },
     created() {

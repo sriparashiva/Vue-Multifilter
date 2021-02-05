@@ -31,8 +31,13 @@
     font-family: AnodinaDevanagariRegular;
     src: url(https://nithyanandauniversity.github.io/fontrepo/AnodinaDevanagari/AnodinaDevanagariRegular.ttf);
   }
+
+  @font-face {
+    font-family: SourceSansProDevanagariRegular;
+    src: url(https://nithyanandauniversity.github.io/fontrepo/SourceSansProDevanagari/SourceSansProDevanagariRegular.ttf);
+  }
   #app {
-    font-family: AnodinaDevanagariRegular, sans-serif;
+    font-family: SourceSansProDevanagariRegular, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     margin-top: 60px;

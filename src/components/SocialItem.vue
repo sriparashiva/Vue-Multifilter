@@ -1,8 +1,12 @@
 <template>
   <v-card elevation="2" class="socialCard">
     <v-card-subtitle class="socialCard__header">
-      <v-chip small class="socialCard__platform">{{ platform }}</v-chip>
-      <v-chip small class="socialCard__platform">{{ category }}</v-chip>
+      <v-chip small @click="setPlatformFilter" class="socialCard__platform">{{
+        platform
+      }}</v-chip>
+      <v-chip small @click="setCategoryFilter" class="socialCard__platform">{{
+        category
+      }}</v-chip>
     </v-card-subtitle>
     <v-card-title class="socialCard__title"> {{ title }}</v-card-title>
     <v-divider class="socialCard__divider"></v-divider>
@@ -25,6 +29,15 @@
       url: String,
       platform: String,
       category: String,
+    },
+    emits: ["set-category-filter", "set-platform-filter"],
+    methods: {
+      setCategoryFilter() {
+        this.$emit("set-category-filter", this.category);
+      },
+      setPlatformFilter() {
+        this.$emit("set-platform-filter", this.platform);
+      },
     },
   };
 </script>
@@ -56,9 +69,8 @@
     .socialCard__title {
       font-size: 1rem;
       line-height: 1.3em;
-      font-weight: 500;
+      font-weight: 600;
       color: #5a4e3f;
-      font-family: AnodinaDevanagariBold;
       word-break: break-word;
       padding-top: 0;
     }
