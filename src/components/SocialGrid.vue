@@ -57,7 +57,8 @@
         label="Language"
         hint="View social media in your language"
         color="primary"
-        style="width: 45%"
+        style="width: 100%"
+        class="filters__select"
       >
         <template v-slot:no-option>
           <q-item>
@@ -82,7 +83,8 @@
         label="Region"
         hint="View social media related to your region"
         color="primary"
-        style="width: 45%"
+        style="width: 100%"
+        class="filters__select"
       >
         <template v-slot:no-option>
           <q-item>
@@ -382,11 +384,17 @@
   .filters {
     display: flex;
     align-items: center;
+    flex-flow: row wrap;
     justify-content: space-between;
     margin: 1rem 0 2rem 0;
+  }
+  .filters__select {
+    flex: 1 1 50%;
+  }
 
+  @media screen and (max-width: 768px) {
     .filters__select {
-      max-width: 45%;
+      flex: 1 1 100%;
     }
   }
   .socialGrid__noLinksMessage {
