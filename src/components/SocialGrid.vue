@@ -1,5 +1,11 @@
 <template>
   <div>
+    <div v-if="dataImported" class="totalCount">
+      {{
+        socialLinks.length.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+      }}
+      Digital Media Assets
+    </div>
     <div class="filters">
       <q-select
         use-input
@@ -239,8 +245,10 @@
 
         // Add category set to array of categories
         this.categories = [...categorySet];
+        this.categories.sort();
         // Add platforms set to array of platforms
         this.platforms = [...platformSet];
+        this.platforms.sort();
       },
       loadMore(index, done) {
         setTimeout(() => {
@@ -381,6 +389,13 @@
 </script>
 
 <style lang="scss" scoped>
+  .totalCount {
+    text-align: center;
+    font-size: 1.5rem;
+    margin: 2rem 0;
+    font-family: SourceSansProDevanagariSemiBold;
+    color: #5e2121;
+  }
   .socialGrid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
