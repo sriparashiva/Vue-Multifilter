@@ -2,7 +2,6 @@
   <div>
     <div class="filters">
       <q-select
-        filled
         use-input
         input-debounce="0"
         :options="platformSelectOptions"
@@ -26,7 +25,6 @@
         </template>
       </q-select>
       <q-select
-        filled
         use-input
         input-debounce="0"
         :options="categories"
@@ -44,7 +42,6 @@
 
     <div class="filters">
       <q-select
-        filled
         v-model="selectedLanguage"
         use-input
         hide-selected
@@ -70,7 +67,6 @@
       </q-select>
 
       <q-select
-        filled
         v-model="selectedRegion"
         use-input
         hide-selected
@@ -96,10 +92,16 @@
       </q-select>
     </div>
 
-    <q-separator color="grey-5" inset style="margin-bottom: 2rem" />
+    <q-separator color="grey-3" inset style="margin-bottom: 2rem" />
 
     <div v-if="!dataImported" class="socialGrid">
-      <q-card v-for="n in 8" :key="n" bordered flat style="max-width: 300px">
+      <q-card
+        v-for="n in 8"
+        :key="n"
+        flat
+        style="max-width: 300px"
+        class="socialGrid__skeleton"
+      >
         <q-card-section>
           <q-skeleton type="text" height="30px" />
           <q-skeleton type="text" height="30px" />
@@ -221,11 +223,13 @@
             region: value.gsx$geography.$t,
           };
 
+          if (entry.category === "") entry.category = "Other";
+
           // Add to the set of categories
           if (value.gsx$category.$t !== "")
             categorySet.add(value.gsx$category.$t);
 
-          // Add to the set of categories
+          // Add to the set of platforms
           if (value.gsx$platform.$t !== "")
             platformSet.add(value.gsx$platform.$t);
 
@@ -382,16 +386,22 @@
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1rem;
     justify-content: center;
+
+    .socialGrid__skeleton {
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1) !important;
+      padding: 0.5rem;
+    }
   }
   .filters {
     display: flex;
     align-items: center;
     flex-flow: row wrap;
+    gap: 3rem;
     justify-content: space-between;
     margin: 1rem 0 2rem 0;
   }
   .filters__select {
-    flex: 1 1 50%;
+    flex: 1 1 45%;
   }
 
   @media screen and (max-width: 768px) {

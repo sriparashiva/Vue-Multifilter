@@ -1,5 +1,5 @@
 <template>
-  <q-card class="socialCard shadow-1">
+  <q-card flat class="socialCard">
     <q-card-section>
       <div class="socialCard__title">{{ title }}</div>
       <div class="socialCard__subtitle">
@@ -7,7 +7,7 @@
           size="12px"
           clickable
           @click="setPlatformFilter"
-          color="positive"
+          color="accent"
           text-color="white"
           class="socialCard__chip"
         >
@@ -17,7 +17,7 @@
           size="12px"
           clickable
           @click="setCategoryFilter"
-          color="grey-4"
+          color="info"
           text-color="secondary"
           class="socialCard__chip"
         >
@@ -26,10 +26,10 @@
       </div>
     </q-card-section>
 
-    <q-separator color="grey-4" inset class="socialCard__divider" />
+    <q-separator color="grey-3" inset class="socialCard__divider" />
 
     <q-card-actions class="socialCard__link" align="left">
-      <q-btn flat text :href="url" target="_blank">VISIT</q-btn>
+      <q-btn flat :href="url" target="_blank" color="primary">VISIT</q-btn>
     </q-card-actions>
   </q-card>
 </template>
@@ -58,14 +58,16 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   .socialCard {
-    transition: background-color 0.5s ease;
+    transition: box-shadow 0.5s ease;
     background-color: white;
     display: flex;
     flex-flow: column nowrap;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1) !important;
 
     &:hover {
       //   border: 1px solid rgba(218, 218, 218, 0.766);
-      background-color: #f1eded;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
+        0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
     }
 
     .socialCard__subtitle {
