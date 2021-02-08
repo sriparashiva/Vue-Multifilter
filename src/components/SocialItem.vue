@@ -29,7 +29,14 @@
     <q-separator color="grey-3" inset class="socialCard__divider" />
 
     <q-card-actions class="socialCard__link" align="left">
-      <q-btn flat :href="url" target="_blank" color="primary">VISIT</q-btn>
+      <q-btn
+        flat
+        type="a"
+        :href="url"
+        target="_blank"
+        label="VISIT"
+        color="primary"
+      />
     </q-card-actions>
   </q-card>
 </template>
@@ -58,6 +65,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   .socialCard {
+    padding: 0.25rem;
     transition: box-shadow 0.5s ease;
     background-color: white;
     display: flex;

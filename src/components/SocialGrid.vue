@@ -117,16 +117,21 @@
           <q-skeleton type="text" height="30px" />
 
           <div
-            style="margin-top: 1rem; display: flex; flex-flow: row nowrap; gap: .5rem"
+            style="margin-top: 1rem; margin-bottom: 1rem; display: flex; flex-flow: row nowrap; gap: .5rem"
           >
             <q-skeleton type="QChip" width="75px" />
             <q-skeleton type="QChip" width="75px" />
           </div>
-        </q-card-section>
 
-        <q-card-actions align="right">
+          <q-separator
+            color="grey-3"
+            style="margin-bottom: 1rem;"
+            inset
+            class="socialCard__divider"
+          />
+
           <q-skeleton type="QBtn" height="25px" width="75px" />
-        </q-card-actions>
+        </q-card-section>
       </q-card>
     </div>
     <div v-else>
