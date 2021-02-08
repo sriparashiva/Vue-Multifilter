@@ -1,9 +1,7 @@
 <template>
   <div>
     <div v-if="dataImported" class="totalCount">
-      {{
-        socialLinks.length.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-      }}
+      {{ formatNumber(socialLinks.length) }}
       Digital Media Assets
     </div>
     <div class="filters">
@@ -98,7 +96,13 @@
       </q-select>
     </div>
 
-    <q-separator color="grey-3" inset style="margin-bottom: 2rem" />
+    <q-separator color="grey-3" class="socialGrid__separator" />
+
+    <div v-if="filteredLinks.length < socialLinks.length" class="resultsCount">
+      Showing {{ formatNumber(filteredLinks.length) }} matching result{{
+        filteredLinks.length > 1 ? "s" : ""
+      }}
+    </div>
 
     <div v-if="!dataImported" class="socialGrid">
       <q-card
@@ -158,7 +162,7 @@
           </template>
         </q-infinite-scroll>
       </div>
-      <div v-else class="socialGrid__noLinksMessage">No links to display</div>
+      <div v-else class="socialGrid__noLinksMessage">No results to display</div>
     </div>
   </div>
 </template>
@@ -379,6 +383,9 @@
           })
         );
       },
+      formatNumber(num) {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      },
     },
     created() {
       this.getLinksData();
@@ -430,5 +437,14 @@
     margin-top: 3rem;
     color: #776551;
     font-size: 1.25rem;
+  }
+  .resultsCount {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    color: rgb(140, 140, 140);
+  }
+  .socialGrid__separator {
+    margin-bottom: 1.5rem;
   }
 </style>

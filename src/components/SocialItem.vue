@@ -7,7 +7,7 @@
           size="12px"
           clickable
           @click="setPlatformFilter"
-          color="accent"
+          color="positive"
           text-color="white"
           class="socialCard__chip"
         >
@@ -62,11 +62,11 @@
     background-color: white;
     display: flex;
     flex-flow: column nowrap;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.1) !important;
 
     &:hover {
       //   border: 1px solid rgba(218, 218, 218, 0.766);
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3),
         0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
     }
 
