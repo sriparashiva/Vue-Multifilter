@@ -31,7 +31,7 @@
       </div>
       <div class="socialCounter col-xs-12 col-sm-6 col-md-3">
         <div class="socialCounter__number">
-          {{ formatNumber(allLanguages.length) }}
+          {{ formatNumber(languages.length) }}
         </div>
         <div class="socialCounter__title">
           Languages
@@ -39,7 +39,7 @@
       </div>
       <div class="socialCounter col-xs-12 col-sm-6 col-md-3">
         <div class="socialCounter__number">
-          {{ formatNumber(allRegions.length) }}
+          {{ formatNumber(regions.length) }}
         </div>
         <div class="socialCounter__title">
           Regions of the World
@@ -240,10 +240,12 @@
         platformSelectOptions: [],
         dataImported: false,
         loadedLinks: [],
-        allLanguages: [],
+        languages: [],
+        // allLanguages: [],
         languageSelectOptions: [],
         selectedLanguage: null,
-        allRegions: [],
+        regions: [],
+        // allRegions: [],
         regionSelectOptions: [],
         selectedRegion: null,
       }
@@ -269,6 +271,8 @@
       parseData(entries) {
         let categorySet = new Set()
         let platformSet = new Set()
+        let languageSet = new Set()
+        let regionSet = new Set()
 
         entries.forEach((value) => {
           let entry = {
@@ -291,6 +295,14 @@
           if (value.gsx$platform.$t !== '')
             platformSet.add(value.gsx$platform.$t)
 
+          // Add to the set of languages
+          if (value.gsx$language.$t !== '')
+            languageSet.add(value.gsx$language.$t)
+
+          // Add to the set of regions
+          if (value.gsx$geography.$t !== '')
+            regionSet.add(value.gsx$geography.$t)
+
           // Push entry into the list of all links
           this.socialLinks.push(entry)
         })
@@ -301,6 +313,12 @@
         // Add platforms set to array of platforms
         this.platforms = [...platformSet]
         this.platforms.sort()
+        // Add platforms set to array of platforms
+        this.languages = [...languageSet]
+        this.languages.sort()
+        // Add platforms set to array of platforms
+        this.regions = [...regionSet]
+        this.regions.sort()
       },
       loadMore(index, done) {
         setTimeout(() => {
@@ -371,13 +389,13 @@
       filterLanguagesSelect(val, update) {
         if (val === '') {
           update(() => {
-            this.languageSelectOptions = this.allLanguages
+            this.languageSelectOptions = this.languages
           })
           return
         }
         update(() => {
           const needle = val.toLowerCase()
-          this.languageSelectOptions = this.allLanguages.filter(
+          this.languageSelectOptions = this.languages.filter(
             (v) => v.toLowerCase().indexOf(needle) > -1
           )
         })
@@ -385,13 +403,13 @@
       filterRegionsSelect(val, update) {
         if (val === '') {
           update(() => {
-            this.regionSelectOptions = this.allRegions
+            this.regionSelectOptions = this.regions
           })
           return
         }
         update(() => {
           const needle = val.toLowerCase()
-          this.regionSelectOptions = this.allRegions.filter(
+          this.regionSelectOptions = this.regions.filter(
             (v) => v.label.toLowerCase().indexOf(needle) > -1
           )
         })
@@ -406,39 +424,39 @@
             this.parseData(response.data.feed.entry)
           })
       },
-      getLanguages() {
-        axios
-          .get(
-            `https://spreadsheets.google.com/feeds/list/${sheetID}/2/public/values?alt=json`
-          )
-          .then((response) => this.parseLanguages(response.data.feed.entry))
-      },
-      getRegions() {
-        axios
-          .get(
-            `https://spreadsheets.google.com/feeds/list/${sheetID}/3/public/values?alt=json`
-          )
-          .then((response) => this.parseRegions(response.data.feed.entry))
-      },
-      parseLanguages(entries) {
-        entries.forEach((value) => this.allLanguages.push(value.gsx$name.$t))
-      },
-      parseRegions(entries) {
-        entries.forEach((value) =>
-          this.allRegions.push({
-            label: value.gsx$name.$t,
-            value: value.gsx$key.$t,
-          })
-        )
-      },
+      // getLanguages() {
+      //   axios
+      //     .get(
+      //       `https://spreadsheets.google.com/feeds/list/${sheetID}/2/public/values?alt=json`
+      //     )
+      //     .then((response) => this.parseLanguages(response.data.feed.entry))
+      // },
+      // getRegions() {
+      //   axios
+      //     .get(
+      //       `https://spreadsheets.google.com/feeds/list/${sheetID}/3/public/values?alt=json`
+      //     )
+      //     .then((response) => this.parseRegions(response.data.feed.entry))
+      // },
+      // parseLanguages(entries) {
+      //   entries.forEach((value) => this.allLanguages.push(value.gsx$name.$t))
+      // },
+      // parseRegions(entries) {
+      //   entries.forEach((value) =>
+      //     this.allRegions.push({
+      //       label: value.gsx$name.$t,
+      //       value: value.gsx$key.$t,
+      //     })
+      //   )
+      // },
       formatNumber(num) {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
       },
     },
     created() {
       this.getLinksData()
-      this.getLanguages()
-      this.getRegions()
+      // this.getLanguages()
+      // this.getRegions()
     },
   }
 </script>
