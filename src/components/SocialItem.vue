@@ -43,39 +43,41 @@
 
 <script>
   export default {
-    name: "SocialItem",
+    name: 'SocialItem',
     props: {
       title: String,
       url: String,
       platform: String,
       category: String,
     },
-    emits: ["set-category-filter", "set-platform-filter"],
+    emits: ['set-category-filter', 'set-platform-filter'],
     methods: {
       setCategoryFilter() {
-        this.$emit("set-category-filter", this.category);
+        this.$emit('set-category-filter', this.category)
       },
       setPlatformFilter() {
-        this.$emit("set-platform-filter", this.platform);
+        this.$emit('set-platform-filter', this.platform)
       },
     },
-  };
+  }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   .socialCard {
     padding: 0.25rem;
-    transition: box-shadow 0.5s ease;
+    // transition: box-shadow 0.5s ease;
+    transition: transform 0.3s ease;
     background-color: white;
     display: flex;
     flex-flow: column nowrap;
-    box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.2) !important;
 
     &:hover {
       //   border: 1px solid rgba(218, 218, 218, 0.766);
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3),
-        0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+      // box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4),
+      // 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+      transform: translateY(-3px);
     }
 
     .socialCard__subtitle {

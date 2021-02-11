@@ -1,9 +1,52 @@
 <template>
   <div>
-    <div v-if="dataImported" class="totalCount">
-      {{ formatNumber(socialLinks.length) }}
-      Digital Media Assets
+    <div class="socialLinks__header">
+      <h1 class="text-h4 text-weight-bold text-center">
+        KAILASA's Digital Media Initiatives
+      </h1>
+      <div class="text-subtitle1 text-center">
+        Over 1 Billion Lives Enriched Worldwide
+      </div>
     </div>
+
+    <div
+      v-if="dataImported"
+      class="socialCounters row justify-evenly align-center"
+    >
+      <div class="socialCounter col-xs-12 col-sm-6 col-md-3">
+        <div class="socialCounter__number">
+          {{ formatNumber(socialLinks.length) }}
+        </div>
+        <div class="socialCounter__title">
+          Digital Media Assets
+        </div>
+      </div>
+      <div class="socialCounter col-xs-12 col-sm-6 col-md-3">
+        <div class="socialCounter__number">
+          {{ formatNumber(platforms.length) }}
+        </div>
+        <div class="socialCounter__title">
+          Social Media and Web Platforms
+        </div>
+      </div>
+      <div class="socialCounter col-xs-12 col-sm-6 col-md-3">
+        <div class="socialCounter__number">
+          {{ formatNumber(allLanguages.length) }}
+        </div>
+        <div class="socialCounter__title">
+          Languages
+        </div>
+      </div>
+      <div class="socialCounter col-xs-12 col-sm-6 col-md-3">
+        <div class="socialCounter__number">
+          {{ formatNumber(allRegions.length) }}
+        </div>
+        <div class="socialCounter__title">
+          Regions of the World
+        </div>
+      </div>
+    </div>
+
     <div class="filters">
       <q-select
         use-input
@@ -100,7 +143,7 @@
 
     <div v-if="filteredLinks.length < socialLinks.length" class="resultsCount">
       Showing {{ formatNumber(filteredLinks.length) }} matching result{{
-        filteredLinks.length > 1 ? "s" : ""
+        filteredLinks.length > 1 ? 's' : ''
       }}
     </div>
 
@@ -173,15 +216,15 @@
 </template>
 
 <script>
-  import SocialItem from "./SocialItem.vue";
-  import axios from "axios";
-  import intersection from "lodash.intersection";
+  import SocialItem from './SocialItem.vue'
+  import axios from 'axios'
+  import intersection from 'lodash.intersection'
 
   //Source data Google Sheet ID
-  const sheetID = "1uy6AQ0m_PJd5zGhqICjvX1jgWs7-pBoIL9C8Dpjb5r8";
+  const sheetID = '1uy6AQ0m_PJd5zGhqICjvX1jgWs7-pBoIL9C8Dpjb5r8'
   // const sheetID = "1Lz4onaG5HB-ue84ka4QT0H1OrHrzIO2eRjnvzZCXPUY";
   export default {
-    name: "SocialGrid",
+    name: 'SocialGrid',
     components: {
       SocialItem,
     },
@@ -203,29 +246,29 @@
         allRegions: [],
         regionSelectOptions: [],
         selectedRegion: null,
-      };
+      }
     },
     computed: {
       filteredLinks() {
-        this.resetLoadedLinks();
+        this.resetLoadedLinks()
         return intersection(
           this.filterPlatforms(),
           this.filterCategories(),
           this.filterLanguage(),
           this.filterRegion()
-        );
+        )
       },
       loadBuffer() {
-        return this.filteredLinks.filter((link, index) => index > 30);
+        return this.filteredLinks.filter((link, index) => index > 30)
       },
       filteredLinksToDisplay() {
-        return this.filteredLinks.filter((link, index) => index < 30);
+        return this.filteredLinks.filter((link, index) => index < 30)
       },
     },
     methods: {
       parseData(entries) {
-        let categorySet = new Set();
-        let platformSet = new Set();
+        let categorySet = new Set()
+        let platformSet = new Set()
 
         entries.forEach((value) => {
           let entry = {
@@ -236,28 +279,28 @@
             category: value.gsx$category.$t,
             language: value.gsx$language.$t,
             region: value.gsx$geography.$t,
-          };
+          }
 
-          if (entry.category === "") entry.category = "Other";
+          if (entry.category === '') entry.category = 'Other'
 
           // Add to the set of categories
-          if (value.gsx$category.$t !== "")
-            categorySet.add(value.gsx$category.$t);
+          if (value.gsx$category.$t !== '')
+            categorySet.add(value.gsx$category.$t)
 
           // Add to the set of platforms
-          if (value.gsx$platform.$t !== "")
-            platformSet.add(value.gsx$platform.$t);
+          if (value.gsx$platform.$t !== '')
+            platformSet.add(value.gsx$platform.$t)
 
           // Push entry into the list of all links
-          this.socialLinks.push(entry);
-        });
+          this.socialLinks.push(entry)
+        })
 
         // Add category set to array of categories
-        this.categories = [...categorySet];
-        this.categories.sort();
+        this.categories = [...categorySet]
+        this.categories.sort()
         // Add platforms set to array of platforms
-        this.platforms = [...platformSet];
-        this.platforms.sort();
+        this.platforms = [...platformSet]
+        this.platforms.sort()
       },
       loadMore(index, done) {
         setTimeout(() => {
@@ -265,93 +308,93 @@
             this.loadedLinks = [
               ...this.loadedLinks,
               ...this.loadBuffer.splice(0, this.perPage),
-            ];
-            done();
+            ]
+            done()
           }
-        }, 600);
+        }, 600)
       },
       resetLoadedLinks() {
-        this.loadedLinks = [];
+        this.loadedLinks = []
       },
       setCategoryFilter(category) {
-        this.resetLoadedLinks();
-        this.selectedPlatforms = [];
-        this.selectedCategories = [category];
+        this.resetLoadedLinks()
+        this.selectedPlatforms = []
+        this.selectedCategories = [category]
       },
       setPlatformFilter(platform) {
-        this.resetLoadedLinks();
-        this.selectedCategories = [];
-        this.selectedPlatforms = [platform];
+        this.resetLoadedLinks()
+        this.selectedCategories = []
+        this.selectedPlatforms = [platform]
       },
       filterCategories() {
         if (this.selectedCategories.length > 0)
           return this.socialLinks.filter((link) =>
             this.selectedCategories.includes(link.category)
-          );
-        else return this.socialLinks;
+          )
+        else return this.socialLinks
       },
       filterPlatforms() {
         if (this.selectedPlatforms.length > 0)
           return this.socialLinks.filter((link) =>
             this.selectedPlatforms.includes(link.platform)
-          );
-        else return this.socialLinks;
+          )
+        else return this.socialLinks
       },
       filterLanguage() {
         if (this.selectedLanguage !== null)
           return this.socialLinks.filter(
             (link) => this.selectedLanguage === link.language
-          );
-        else return this.socialLinks;
+          )
+        else return this.socialLinks
       },
       filterRegion() {
         if (this.selectedRegion !== null)
           return this.socialLinks.filter(
             (link) => this.selectedRegion.value === link.region
-          );
-        else return this.socialLinks;
+          )
+        else return this.socialLinks
       },
       filterPlatformSelect(val, update) {
-        if (val === "") {
+        if (val === '') {
           update(() => {
-            this.platformSelectOptions = this.platforms;
-          });
-          return;
+            this.platformSelectOptions = this.platforms
+          })
+          return
         }
         update(() => {
-          const needle = val.toLowerCase();
+          const needle = val.toLowerCase()
           this.platformSelectOptions = this.platforms.filter(
             (v) => v.toLowerCase().indexOf(needle) > -1
-          );
-        });
+          )
+        })
       },
       filterLanguagesSelect(val, update) {
-        if (val === "") {
+        if (val === '') {
           update(() => {
-            this.languageSelectOptions = this.allLanguages;
-          });
-          return;
+            this.languageSelectOptions = this.allLanguages
+          })
+          return
         }
         update(() => {
-          const needle = val.toLowerCase();
+          const needle = val.toLowerCase()
           this.languageSelectOptions = this.allLanguages.filter(
             (v) => v.toLowerCase().indexOf(needle) > -1
-          );
-        });
+          )
+        })
       },
       filterRegionsSelect(val, update) {
-        if (val === "") {
+        if (val === '') {
           update(() => {
-            this.regionSelectOptions = this.allRegions;
-          });
-          return;
+            this.regionSelectOptions = this.allRegions
+          })
+          return
         }
         update(() => {
-          const needle = val.toLowerCase();
+          const needle = val.toLowerCase()
           this.regionSelectOptions = this.allRegions.filter(
             (v) => v.label.toLowerCase().indexOf(needle) > -1
-          );
-        });
+          )
+        })
       },
       getLinksData() {
         axios
@@ -359,26 +402,26 @@
             `https://spreadsheets.google.com/feeds/list/${sheetID}/1/public/values?alt=json`
           )
           .then((response) => {
-            this.dataImported = true;
-            this.parseData(response.data.feed.entry);
-          });
+            this.dataImported = true
+            this.parseData(response.data.feed.entry)
+          })
       },
       getLanguages() {
         axios
           .get(
             `https://spreadsheets.google.com/feeds/list/${sheetID}/2/public/values?alt=json`
           )
-          .then((response) => this.parseLanguages(response.data.feed.entry));
+          .then((response) => this.parseLanguages(response.data.feed.entry))
       },
       getRegions() {
         axios
           .get(
             `https://spreadsheets.google.com/feeds/list/${sheetID}/3/public/values?alt=json`
           )
-          .then((response) => this.parseRegions(response.data.feed.entry));
+          .then((response) => this.parseRegions(response.data.feed.entry))
       },
       parseLanguages(entries) {
-        entries.forEach((value) => this.allLanguages.push(value.gsx$name.$t));
+        entries.forEach((value) => this.allLanguages.push(value.gsx$name.$t))
       },
       parseRegions(entries) {
         entries.forEach((value) =>
@@ -386,18 +429,18 @@
             label: value.gsx$name.$t,
             value: value.gsx$key.$t,
           })
-        );
+        )
       },
       formatNumber(num) {
-        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
       },
     },
     created() {
-      this.getLinksData();
-      this.getLanguages();
-      this.getRegions();
+      this.getLinksData()
+      this.getLanguages()
+      this.getRegions()
     },
-  };
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -451,5 +494,27 @@
   }
   .socialGrid__separator {
     margin-bottom: 1.5rem;
+  }
+  .socialCounters {
+    margin: 2rem 0;
+    row-gap: 1rem;
+
+    .socialCounter {
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: flex-start;
+      align-items: center;
+      max-width: 150px;
+      text-align: center;
+
+      .socialCounter__number {
+        font-size: 2rem;
+        font-weight: 600;
+      }
+    }
+  }
+  .socialLinks__header {
+    max-width: 600px;
+    margin: 0 auto;
   }
 </style>
