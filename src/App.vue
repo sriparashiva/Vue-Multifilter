@@ -22,11 +22,25 @@
   }
   @font-face {
     font-family: UpgradeDevanagariRegular;
-    src: url('./assets/fonts/Upgrade-Devanagari-Regular.ttf');
+    src: url('./assets/fonts/Upgrade-Devanagari-Regular.woff2') format('woff2'),
+      /* Modern Browsers */ url('./assets/fonts/Upgrade-Devanagari-Regular.otf')
+        format('opentype'); /* Safari, Android, iOS */
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+    font-style: normal;
+    font-weight: 400;
+    font-display: fallback;
   }
   @font-face {
     font-family: UpgradeDevanagariMedium;
-    src: url('./assets/fonts/Upgrade-Devanagari-Medium.ttf');
+    src: url('./assets/fonts/Upgrade-Devanagari-Medium.woff2') format('woff2'),
+      /* Modern Browsers */ url('./assets/fonts/Upgrade-Devanagari-Medium.otf')
+        format('opentype'); /* Safari, Android, iOS */
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+    font-style: normal;
+    font-weight: 500;
+    font-display: fallback;
   }
   #app {
     font-family: UpgradeDevanagariRegular, sans-serif;
