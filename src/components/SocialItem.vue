@@ -93,6 +93,7 @@
       word-break: break-word;
       letter-spacing: 0px;
       font-family: UpgradeDevanagariMedium;
+      font-weight: 600;
     }
 
     .socialCard__divider {

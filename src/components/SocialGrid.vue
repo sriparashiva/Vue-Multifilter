@@ -506,6 +506,7 @@
 
       .socialCounter__title {
         font-family: UpgradeDevanagariMedium;
+        font-weight: 600;
       }
     }
   }
@@ -515,6 +516,7 @@
 
     h1 {
       font-family: UpgradeDevanagariMedium;
+      font-weight: 600;
     }
   }
 </style>

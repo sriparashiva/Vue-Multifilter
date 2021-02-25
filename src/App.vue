@@ -39,7 +39,7 @@
     font-weight: normal;
     text-rendering: optimizeLegibility;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 600;
     font-display: fallback;
   }
   #app {
