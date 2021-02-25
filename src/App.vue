@@ -21,15 +21,15 @@
     padding: 0;
   }
   @font-face {
-    font-family: SourceSansProDevanagariRegular;
-    src: url('./assets/fonts/SourceSansProDevanagariRegular.ttf');
+    font-family: UpgradeDevanagariRegular;
+    src: url('./assets/fonts/Upgrade-Devanagari-Regular.ttf');
   }
   @font-face {
-    font-family: SourceSansProDevanagariSemiBold;
-    src: url('./assets/fonts/SourceSansProDevanagariSemiBold.ttf');
+    font-family: UpgradeDevanagariMedium;
+    src: url('./assets/fonts/Upgrade-Devanagari-Medium.ttf');
   }
   #app {
-    font-family: SourceSansProDevanagariRegular, sans-serif;
+    font-family: UpgradeDevanagariRegular, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #5f4444;

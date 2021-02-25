@@ -424,39 +424,12 @@
             this.parseData(response.data.feed.entry)
           })
       },
-      // getLanguages() {
-      //   axios
-      //     .get(
-      //       `https://spreadsheets.google.com/feeds/list/${sheetID}/2/public/values?alt=json`
-      //     )
-      //     .then((response) => this.parseLanguages(response.data.feed.entry))
-      // },
-      // getRegions() {
-      //   axios
-      //     .get(
-      //       `https://spreadsheets.google.com/feeds/list/${sheetID}/3/public/values?alt=json`
-      //     )
-      //     .then((response) => this.parseRegions(response.data.feed.entry))
-      // },
-      // parseLanguages(entries) {
-      //   entries.forEach((value) => this.allLanguages.push(value.gsx$name.$t))
-      // },
-      // parseRegions(entries) {
-      //   entries.forEach((value) =>
-      //     this.allRegions.push({
-      //       label: value.gsx$name.$t,
-      //       value: value.gsx$key.$t,
-      //     })
-      //   )
-      // },
       formatNumber(num) {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
       },
     },
     created() {
       this.getLinksData()
-      // this.getLanguages()
-      // this.getRegions()
     },
   }
 </script>
@@ -466,7 +439,7 @@
     text-align: center;
     font-size: 1.5rem;
     margin: 2rem 0;
-    font-family: SourceSansProDevanagariSemiBold;
+    font-family: UpgradeDevanagariSemiBold;
     color: #5e2121;
   }
   .socialGrid {
@@ -528,11 +501,20 @@
       .socialCounter__number {
         font-size: 2rem;
         font-weight: 600;
+        font-family: UpgradeDevanagariMedium;
+      }
+
+      .socialCounter__title {
+        font-family: UpgradeDevanagariMedium;
       }
     }
   }
   .socialLinks__header {
     max-width: 600px;
     margin: 0 auto;
+
+    h1 {
+      font-family: UpgradeDevanagariMedium;
+    }
   }
 </style>

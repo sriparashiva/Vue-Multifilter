@@ -1,5 +1,5 @@
 <template>
-  <q-card flat class="socialCard">
+  <q-card flat bordered class="socialCard">
     <q-card-section>
       <div class="socialCard__title">{{ title }}</div>
       <div class="socialCard__subtitle">
@@ -71,12 +71,9 @@
     background-color: white;
     display: flex;
     flex-flow: column nowrap;
-    box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.2) !important;
 
     &:hover {
-      //   border: 1px solid rgba(218, 218, 218, 0.766);
-      // box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4),
-      // 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.1) !important;
       transform: translateY(-3px);
     }
 
@@ -95,7 +92,7 @@
       color: #5a4e3f;
       word-break: break-word;
       letter-spacing: 0px;
-      font-family: SourceSansProDevanagariSemiBold;
+      font-family: UpgradeDevanagariMedium;
     }
 
     .socialCard__divider {
@@ -103,7 +100,7 @@
     }
 
     .socialCard__link {
-      font-family: SourceSansProDevanagariSemiBold;
+      font-family: UpgradeDevanagariMedium;
       letter-spacing: 1px;
     }
 
