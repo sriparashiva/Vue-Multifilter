@@ -92,17 +92,11 @@
       color: #5a4e3f;
       word-break: break-word;
       letter-spacing: 0px;
-      font-family: UpgradeDevanagariMedium;
       font-weight: 600;
     }
 
     .socialCard__divider {
       margin-top: auto;
-    }
-
-    .socialCard__link {
-      font-family: UpgradeDevanagariMedium;
-      letter-spacing: 1px;
     }
 
     .socialCard__linkIcon {
